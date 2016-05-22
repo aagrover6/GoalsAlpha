@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorCharcoal"
+    android:weightSum="1"
+    android:typeface="monospace">
+
+
+<ListView
+        android:id="@+id/goalListViewGroup"
+        android:layout_width="match_parent"
+        android:layout_height="233dp"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:typeface="monospace"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:text="Start New Goal"
+        android:id="@+id/bStartNewGoal"
+        android:background="@color/colorLightBlue"
+        android:typeface="monospace"
+        android:textColor="@color/colorCharcoal"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="15dp"/>
+
+</LinearLayout>
