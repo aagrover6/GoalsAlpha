@@ -38,7 +38,7 @@ public class GoalInfoActivity extends AppCompatActivity {
             int day = Integer.parseInt(content[1]);
             int month = Integer.parseInt(content[0]);
 
-            Calendar c = new GregorianCalendar(year, month - 1, day);
+            Calendar c = new GregorianCalendar(year, month-1, day);
             long millis = c.getTimeInMillis();
             long difference = millis - Calendar.getInstance().getTime().getTime();
 
@@ -48,10 +48,11 @@ public class GoalInfoActivity extends AppCompatActivity {
             day = Integer.parseInt(content1[2]);
             month = Integer.parseInt(content1[1]);
 
-            Log.w("CURMONTH IS", "" + month);
-
-            c = new GregorianCalendar(year, month, day);
+            c = new GregorianCalendar(year, month-1, day);
             int totalDaysToCompleteGoal = (int) ((millis - c.getTimeInMillis()) / DateUtils.DAY_IN_MILLIS);
+
+            Log.w("TIME DATE NOW IS", "" + Calendar.getInstance().getTime() + "" + Calendar.getInstance().getTime().getTime());
+            Log.w("total days to complete", "" + totalDaysToCompleteGoal);
 
             countDownConfig(difference, totalDaysToCompleteGoal, pwOne);
         }
@@ -59,7 +60,6 @@ public class GoalInfoActivity extends AppCompatActivity {
 
     public void countDownConfig(long difference, int totalDaysToComplete, final ProgressWheel pwOne) {
 
-        //final TextView countDown = (TextView) findViewById(R.id.tvCountDown);
         final TextView daysCount = (TextView) findViewById(R.id.tvDays);
         final TextView hoursCount = (TextView) findViewById(R.id.tvHours);
         final TextView minCount = (TextView) findViewById(R.id.tvMin);
@@ -75,21 +75,22 @@ public class GoalInfoActivity extends AppCompatActivity {
                 int hours = 0;
                 int minutes = 0;
                 int seconds = 0;
-                String sDate = "";
+                int progress = 0;
+                String sDate = "0";
 
                 if (millisUntilFinished > DateUtils.DAY_IN_MILLIS) {
                     days = (int) (millisUntilFinished / DateUtils.DAY_IN_MILLIS);
-                    sDate += days;
+                    sDate = "" + days;
 
-                    float day = (float)days - 30;
+                    float day = (float)days + 1;
                     float x = (day / (float)total) * 360;
-                    int progress = (360 - (int)x);
+                    progress = (360 - (int)x);
 
-                    float percentage = day / (float)total - 1;
+                    int p = (int)total - (int)day;
+
+                    float percentage = p / (float)total;
                     pwOne.setProgress(progress);
-                    pwOne.setText("" + percentage + " %");
-
-                    Log.w("days", "" + days);
+                    pwOne.setText("" + String.format("%.1f", (percentage*100)) + " %");
 
                     GoalsActivity.percentage = String.valueOf(percentage) + "%";
                 }
@@ -98,6 +99,10 @@ public class GoalInfoActivity extends AppCompatActivity {
 
                 if (millisUntilFinished > DateUtils.HOUR_IN_MILLIS) {
                     hours = (int) (millisUntilFinished / DateUtils.HOUR_IN_MILLIS);
+                    if (progress == 0) {
+                        pwOne.setProgress(0);
+                        pwOne.setText("0 %");
+                    }
                 }
 
                 millisUntilFinished -= (hours * DateUtils.HOUR_IN_MILLIS);
@@ -113,20 +118,24 @@ public class GoalInfoActivity extends AppCompatActivity {
                 }
 
                 String d = sDate;
-                sDate += " " + String.format("%02d",hours) + ":" + String.format("%02d",minutes) + ":" + String.format("%02d",seconds);
                 daysCount.setText(d);
                 hoursCount.setText("" + String.format("%02d",hours));
                 minCount.setText("" + String.format("%02d",minutes));
                 secCount.setText("" + String.format("%02d",seconds));
-                //countDown.setText(sDate.trim());
             }
 
             @Override
             public void onFinish() {
-                daysCount.setText("Finished");
-                hoursCount.setText("Finished");
-                minCount.setText("Finished");
-                secCount.setText("Finished");
+                daysCount.setText("0");
+                hoursCount.setText("0");
+                minCount.setText("0");
+                secCount.setText("0");
+
+                pwOne.setProgress(360);
+                pwOne.setText("100.0 %");
+
+                TextView finished = (TextView) findViewById(R.id.tvProgress);
+                finished.setText("Congrats! You completed your goal.");
             }
         };
 

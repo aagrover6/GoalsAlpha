@@ -9,8 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.calpoly.aagrover.goal.LoginActivity"
     android:background="@drawable/login_light"
-    android:typeface="monospace"
-    android:label="Hello there!!!" >
+    android:typeface="monospace" >
 
     <EditText
         android:layout_width="wrap_content"
@@ -96,7 +95,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Set a goal. Get it right."
+        android:text="Set a goal. Do it right."
         android:id="@+id/textView4"
         android:layout_marginTop="25dp"
         android:textColor="@color/colorCharcoal"

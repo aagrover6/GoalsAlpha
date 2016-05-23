@@ -5,6 +5,9 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 /**
  * Created by ashleygrover on 5/16/16.
  */
@@ -38,6 +41,23 @@ public class GoalView extends LinearLayout {
         this.m_goal = goal;
         this.m_goalText.setText(m_goal.getGoal());
         this.m_dateText.setText(m_goal.getDate());
+
+        String date = m_goal.getDate();
+
+        String[] content = date.split("/");
+        int year = Integer.parseInt(content[2]);
+        int day = Integer.parseInt(content[1]);
+        int month = Integer.parseInt(content[0]);
+
+        Calendar c = new GregorianCalendar(year, month-1, day);
+        long millis = c.getTimeInMillis();
+        long difference = millis - Calendar.getInstance().getTime().getTime();
+        if (difference <= 0) {
+            this.m_dateText.setText("");
+            this.m_dateText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.check_30, 0, 0, 0);
+        }
+
+
 
         /*this.m_dateText.setText(GoalsActivity.percentage);
         Log.w("percentage", "" + GoalsActivity.percentage);*/
