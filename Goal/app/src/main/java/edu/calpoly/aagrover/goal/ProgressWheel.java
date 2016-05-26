@@ -542,17 +542,5 @@ public class ProgressWheel extends View {
         }
     }
 
-    public float getContourSize() {
-        return this.contourSize;
-    }
-
-    public void setContourSize(float contourSize) {
-        this.contourSize = contourSize;
-
-        if ( contourPaint != null ) {
-            this.contourPaint.setStrokeWidth( this.contourSize );
-        }
-    }
-
     public int getProgress() { return (int) progress; }
 }

@@ -11,7 +11,11 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -27,10 +31,14 @@ public class GoalsActivity extends AppCompatActivity implements LoaderManager.Lo
     protected static final String SAVED_DATE_VALUE = "dateEditText";
     public static String percentage;
 
-    /* Not exactly sure what this means.. It is the ID of the CursorLoader to be
-    initialized in the LoaderManager and used to load a Cursor. */
     private static final int LOADER_ID = 1;
     private int selectedPosition;
+
+    /**
+     * Used to handle Contextual Action Mode when long-clicking on a single Joke.
+     */
+    private ActionMode.Callback mActionModeCallback;
+    private ActionMode mActionMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +52,13 @@ public class GoalsActivity extends AppCompatActivity implements LoaderManager.Lo
 
         initLayout();
         initAddGoalListeners();
+        initLongClick();
 
         if (getIntent().hasExtra("goalText") && getIntent().hasExtra("dateText")) {
             String theGoal = getIntent().getStringExtra("goalText");
             String theDate = getIntent().getStringExtra("dateText");
             String currentDate = getIntent().getStringExtra("currentDate");
             percentage = getIntent().getStringExtra("percentage");
-
-            Bundle extra = getIntent().getExtras();
-
-            Log.w("currentDate", currentDate);
 
             if(getIntent().hasExtra("goal") && getIntent().hasExtra("date")) {
                 getIntent().removeExtra("goal");
@@ -119,6 +124,52 @@ public class GoalsActivity extends AppCompatActivity implements LoaderManager.Lo
         });
     }
 
+    protected void initLongClick() {
+        this.goalLayout.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (mActionMode != null) {
+                    return false;
+                }
+                mActionMode = startSupportActionMode(mActionModeCallback);
+                selectedPosition = position;
+                return true;
+            }
+        });
+
+        mActionModeCallback = new ActionMode.Callback() {
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                MenuInflater inflater = mode.getMenuInflater();
+                inflater.inflate(R.menu.action_menu, menu);
+                return true;
+            }
+
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menu_remove:
+
+                        GoalView gv = (GoalView)goalLayout.getChildAt(selectedPosition);
+
+                        removeGoal(gv.getGoal());
+                        mode.finish();
+                        return true;
+
+                    default:
+                        return false;
+                }
+            }
+
+            public void onDestroyActionMode(ActionMode mode) {
+                mActionMode = null;
+            }
+        };
+    }
+
     protected void addGoal(Goal goal) {
         Uri uri = Uri.parse(GoalsContentProvider.CONTENT_URI.toString() + "/goals/" + goal.getID());
         ContentValues cv = new ContentValues();
@@ -130,6 +181,13 @@ public class GoalsActivity extends AppCompatActivity implements LoaderManager.Lo
 
         Uri u = getContentResolver().insert(uri, cv);
         goal.setID(Long.valueOf(u.getLastPathSegment()));
+        fillData();
+    }
+
+    protected void removeGoal(Goal goal) {
+        Uri uri = Uri.parse(GoalsContentProvider.CONTENT_URI.toString() + "/goals/" + goal.getID());
+        getContentResolver().delete(uri, null, null);
+
         fillData();
     }
 

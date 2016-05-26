@@ -5,6 +5,7 @@ import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.Calendar;
@@ -12,12 +13,23 @@ import java.util.GregorianCalendar;
 
 public class GoalInfoActivity extends AppCompatActivity {
 
+    private RadioButton thumbsUpButton;
+    private RadioButton thumbsDownButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goal_info);
 
         setTitle("The Details");
+        this.thumbsUpButton = (RadioButton)findViewById(R.id.thumbsUpButton);
+        this.thumbsDownButton = (RadioButton)findViewById(R.id.thumbsDownButton);
+
+        assert thumbsUpButton != null;
+        thumbsUpButton.setButtonDrawable(R.drawable.up);
+
+        assert thumbsDownButton != null;
+        thumbsDownButton.setButtonDrawable(R.drawable.down);
 
         final ProgressWheel pwOne = (ProgressWheel) findViewById(R.id.progressBarTwo);
 
@@ -51,6 +63,7 @@ public class GoalInfoActivity extends AppCompatActivity {
             c = new GregorianCalendar(year, month-1, day);
             int totalDaysToCompleteGoal = (int) ((millis - c.getTimeInMillis()) / DateUtils.DAY_IN_MILLIS);
 
+            // Testing...
             Log.w("TIME DATE NOW IS", "" + Calendar.getInstance().getTime() + "" + Calendar.getInstance().getTime().getTime());
             Log.w("total days to complete", "" + totalDaysToCompleteGoal);
 
@@ -135,7 +148,13 @@ public class GoalInfoActivity extends AppCompatActivity {
                 pwOne.setText("100.0 %");
 
                 TextView finished = (TextView) findViewById(R.id.tvProgress);
-                finished.setText("Congrats! You completed your goal.");
+                finished.setText("Congrats! You completed your goal ");
+
+                thumbsUpButton = (RadioButton)findViewById(R.id.thumbsUpButton);
+                thumbsDownButton = (RadioButton)findViewById(R.id.thumbsDownButton);
+
+                thumbsUpButton.setButtonDrawable(R.drawable.happy_20);
+                thumbsDownButton.setButtonDrawable(R.drawable.check_yellow);
             }
         };
 

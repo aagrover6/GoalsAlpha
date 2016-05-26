@@ -67,8 +67,7 @@
         ProgressWheel:barWidth="10dp"
         ProgressWheel:rimWidth="10dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="26dp" />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="60dp"
@@ -182,22 +181,48 @@
         android:background="@color/colorLightBlue"
         android:textColor="@color/colorCharcoal"
         android:textSize="15sp"
-        android:typeface="monospace"/>
+        android:typeface="monospace"
+        android:layout_marginBottom="7dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:text="Did you make progress towards your goal today?"
+        android:text="Did you make progress today? "
         android:id="@+id/tvProgress"
         android:typeface="monospace"
         android:textSize="12sp"
-        android:layout_below="@+id/textView5"
-        android:layout_marginTop="20dp"
         android:gravity="center"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:layout_above="@+id/progressBarTwo"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_toLeftOf="@+id/thumbsUpButton"
+        android:layout_toRightOf="@+id/ratingRadioGroup"
+        android:layout_toEndOf="@+id/ratingRadioGroup" />
+
+    <RadioGroup
+        android:id="@+id/ratingRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+    </RadioGroup>
+
+    <RadioButton
+        android:id="@+id/thumbsDownButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:layout_alignTop="@+id/thumbsUpButton"
+        android:layout_toRightOf="@+id/thumbsUpButton"
+        android:layout_toEndOf="@+id/thumbsUpButton"
+        android:layout_marginLeft="5dp"/>
+
+    <RadioButton
+        android:id="@+id/thumbsUpButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:layout_above="@+id/progressBarTwo"
+        android:layout_toRightOf="@+id/progressBarTwo"
+        android:layout_toEndOf="@+id/progressBarTwo" />
 
 </RelativeLayout>
